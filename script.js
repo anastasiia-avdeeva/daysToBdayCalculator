@@ -6,17 +6,21 @@ function getMinOrMaxDate(currentDate, min = true) {
   const currentYear = currentDate.getFullYear();
 
   if (min) {
+    // min possible date is 1st of Jan current year
     return `${currentYear}-01-01`;
   } else {
+    //max possible date is the last day current year
     return `${currentYear}-12-31`;
   }
 }
 
 function parseDateToStr(number) {
+  // we need numbers less than 10 with preceding 0
   return number < 10 ? `0${number}` : `${number}`;
 }
 
 function getDefaultDate(currentDate) {
+  //we need to default value for the input field
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const parsedMonth = parseDateToStr(month);
@@ -44,7 +48,7 @@ function calculateDays(date) {
   const now = new Date();
   let nextYearBday;
   let diff;
-
+  //get rid of hours
   now.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
 
@@ -68,13 +72,14 @@ function calculateDays(date) {
 }
 
 function getDeclension(number) {
+  //to make grammatically right output we need to find out the right declension of the word "день"
   const forms = ["день", "дня", "дней"];
 
   if (number >= 5 && number <= 20) {
     return forms[2];
   }
 
-  const lastDigit = Number(toString(number)[-1]);
+  const lastDigit = Number(number.toString().slice(-1));
 
   if (lastDigit == 1) {
     return forms[0];
@@ -85,18 +90,15 @@ function getDeclension(number) {
   }
 }
 
-function pasteResult(days) {
-  resultElement.textContent = days;
-}
-
-function test(event) {
+function calcAndPasteResult(event) {
   event.preventDefault();
   const bDay = new Date(Date.parse(inputField.value));
-  //   console.log(bDay);
-  const days = calculateDays(bDay);
-  //   console.log(days);
 
-  pasteResult(days);
+  const daysLeft = calculateDays(bDay);
+
+  const declension = getDeclension(daysLeft);
+  const strToPaste = `${daysLeft} ${declension}`;
+  resultElement.textContent = strToPaste;
 }
 
-calculateBtn.addEventListener("click", test);
+calculateBtn.addEventListener("click", calcAndPasteResult);
