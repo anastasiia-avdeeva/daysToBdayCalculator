@@ -34,6 +34,15 @@ function pasteMinMaxValueDate() {
 
 window.addEventListener("load", pasteMinMaxValueDate);
 
+function createAndPasteInformElem(message) {
+  resultParagraph.style.display = "none";
+  const informElem = document.createElement("p");
+  informElem.textContent = message;
+  informElem.style.color = "red";
+  informElem.style.fontSize = "25px";
+  main.append(informElem);
+}
+
 function calculateDays(date) {
   const now = new Date();
   let nextYearBday;
@@ -49,15 +58,11 @@ function calculateDays(date) {
   }
 
   if (now.getTime() > date.getTime()) {
-    // if b-day has already passed in the current year
-    nextYearBday = new Date(date);
-    nextYearBday.setFullYear(date.getFullYear() + 1);
-    diff = nextYearBday.getTime() - date.getTime();
-  } else {
-    // if b-day hasn't passed yet
-    diff = date.getTime() - now.getTime();
+    // if b-day has already passed in the current year, change year to next one
+    date.setFullYear(date.getFullYear() + 1);
   }
 
+  diff = date - now;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   return days;
 }
@@ -81,14 +86,6 @@ function getDeclension(number) {
   }
 }
 
-function createAndStyleInformElem() {
-  const informElem = document.createElement("p");
-  informElem.textContent = "Пожалуйста, введите дату рождения!";
-  informElem.style.color = "red";
-  informElem.style.fontSize = "25px";
-  return informElem;
-}
-
 function deleteInformElem() {
   if (paragraphs.length > 1) {
     paragraphs[1].remove();
@@ -100,9 +97,8 @@ function calcAndPasteResult(event) {
 
   if (!inputField.value) {
     if (paragraphs.length < 2) {
-      resultParagraph.style.display = "none";
-      const informElem = createAndStyleInformElem();
-      main.append(informElem);
+      const message = "Пожалуйста, введите дату рождения!";
+      createAndPasteInformElem(message);
     }
     return;
   }
