@@ -83,7 +83,7 @@ function getDeclension(number) {
 
 function createAndStyleInformElem() {
   const informElem = document.createElement("p");
-  informElem.textContent = "Пожалуйста, введите дату!";
+  informElem.textContent = "Пожалуйста, введите дату рождения!";
   informElem.style.color = "red";
   informElem.style.fontSize = "25px";
   return informElem;
@@ -99,11 +99,14 @@ function calcAndPasteResult(event) {
   event.preventDefault();
 
   if (!inputField.value) {
-    resultParagraph.style.display = "none";
-    const informElem = createAndStyleInformElem();
-    main.append(informElem);
+    if (paragraphs.length < 2) {
+      resultParagraph.style.display = "none";
+      const informElem = createAndStyleInformElem();
+      main.append(informElem);
+    }
     return;
   }
+
   const bDay = new Date(Date.parse(inputField.value));
 
   const daysLeft = calculateDays(bDay);
