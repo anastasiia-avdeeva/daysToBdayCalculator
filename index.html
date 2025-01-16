@@ -3,22 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Сколько дней до дня рождения?</title>
   </head>
   <body>
-    <h1 class="title">Дни до дня рождения</h1>
-    <form class="input-group">
-      <input
-        type="date"
-        name="bday-date"
-        id="bday-date"
-        class="input-group__input"
-      />
-      <button class="input-group__btn" id="calculateBtn">Посчитать</button>
-    </form>
-    <p class="output-paragraph">
-      До дня рождения <span class="output" id="result"></span>
-    </p>
+    <main class="main">
+      <h1 class="title">Дни до дня рождения</h1>
+      <form class="input-group">
+        <input
+          type="date"
+          name="bday-date"
+          id="bday-date"
+          class="input-group__input"
+        />
+        <button class="input-group__btn" id="calculateBtn">Посчитать</button>
+      </form>
+      <p class="output-paragraph">
+        До дня рождения:
+        <span class="output-paragraph__output" id="result"></span>
+      </p>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
