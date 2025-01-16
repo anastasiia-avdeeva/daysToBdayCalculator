@@ -1,5 +1,8 @@
 const inputField = document.getElementById("bday-date");
+const main = document.getElementById("content");
+const resultParagraph = document.getElementById("resultParagraph");
 const resultElement = document.getElementById("result");
+const paragraphs = document.getElementsByTagName("p");
 const calculateBtn = document.getElementById("calculateBtn");
 
 function getMinOrMaxDate(currentDate, min = true) {
@@ -19,27 +22,14 @@ function parseDateToStr(number) {
   return number < 10 ? `0${number}` : `${number}`;
 }
 
-function getDefaultDate(currentDate) {
-  //we need to default value for the input field
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
-  const parsedMonth = parseDateToStr(month);
-  const date = currentDate.getDate();
-  const parsedDate = parseDateToStr(date);
-
-  return `${year}-${parsedMonth}-${parsedDate}`;
-}
-
 function pasteMinMaxValueDate() {
   const currentDate = new Date();
 
   const minDateStr = getMinOrMaxDate(currentDate);
   const maxDateStr = getMinOrMaxDate(currentDate, false);
-  const valueStr = getDefaultDate(currentDate);
 
   inputField.min = minDateStr;
   inputField.max = maxDateStr;
-  inputField.value = valueStr;
 }
 
 window.addEventListener("load", pasteMinMaxValueDate);
@@ -48,6 +38,7 @@ function calculateDays(date) {
   const now = new Date();
   let nextYearBday;
   let diff;
+
   //get rid of hours
   now.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
@@ -90,15 +81,40 @@ function getDeclension(number) {
   }
 }
 
+function createAndStyleInformElem() {
+  const informElem = document.createElement("p");
+  informElem.textContent = "Пожалуйста, введите дату!";
+  informElem.style.color = "red";
+  informElem.style.fontSize = "25px";
+  return informElem;
+}
+
+function deleteInformElem() {
+  if (paragraphs.length > 1) {
+    paragraphs[1].remove();
+  }
+}
+
 function calcAndPasteResult(event) {
   event.preventDefault();
+
+  if (!inputField.value) {
+    resultParagraph.style.display = "none";
+    const informElem = createAndStyleInformElem();
+    main.append(informElem);
+    return;
+  }
   const bDay = new Date(Date.parse(inputField.value));
 
   const daysLeft = calculateDays(bDay);
 
   const declension = getDeclension(daysLeft);
   const strToPaste = `${daysLeft} ${declension}`;
+
+  deleteInformElem();
+  resultParagraph.style.display = "block";
   resultElement.textContent = strToPaste;
+  inputField.value = "";
 }
 
 calculateBtn.addEventListener("click", calcAndPasteResult);
